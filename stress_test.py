@@ -16,7 +16,7 @@ IMAGE_PATH = "static/img/frame.jpg" #"jemma.png"
 # initialize the number of requests for the stress test along with
 # the sleep amount between requests
 NUM_REQUESTS = 500
-SLEEP_COUNT = 0.05
+SLEEP_COUNT = 0.01
 
 def call_predict_endpoint(n):
     # load the input image and construct the payload for the request

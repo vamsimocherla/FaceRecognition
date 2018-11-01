@@ -13,6 +13,7 @@ import json
 import io
 import cv2
 import face_db
+import imutils
 
 # initialize our Flask application and Redis server
 app = flask.Flask(__name__)
@@ -44,6 +45,10 @@ def prepare_image_cv(image):
     (h, w) = image.shape[:2]
     # resize the image to blob size
     image = cv2.resize(image, face_db.blob_sizes[face_db.model_index])
+    # use imutils to resize, maintaining aspect ratio
+    # imutils.resize(image,
+    #                height=face_db.blob_sizes[face_db.model_index][0],
+    #                width=face_db.blob_sizes[face_db.model_index][1])
     # return the processed image
     return w, h, image
 

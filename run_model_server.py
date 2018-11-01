@@ -240,7 +240,7 @@ class Server:
             # sleep for a small amount
             time.sleep(settings.SERVER_SLEEP)
 
-    def recognize_batch(self, recognize=True):
+    def recognize_batch_cpu(self, recognize=True):
         # continually pool for new images
         while True:
             # attempt to grab a batch of images from the database, then
@@ -361,7 +361,7 @@ class Server:
             # sleep for a small amount
             time.sleep(settings.BATCH_SERVER_SLEEP)
 
-    def recognize_batch_util(self):
+    def recognize_batch_gpu(self):
         # continually pool for new images
         while True:
             # attempt to grab a batch of images from the database, then
@@ -396,9 +396,14 @@ class Server:
 
             # check to see if we need to process the batch
             if len(image_ids) > 0:
+                start_time = self.current_milli_time()
                 # classify the batch
-                print("* Batch size: {}x{}".format(len(images), images[0].shape))
+                print("* Batch size: {} x {} ".format(len(images), images[0].shape), end='', flush=True)
                 results = face_recognition.batch_face_locations(images, number_of_times_to_upsample=0)
+                end_time = self.current_milli_time()
+                detect_time = "{:5.1f}".format(end_time - start_time)
+                print(" Detection Time: {}".format(detect_time))
+
 
                 # loop over the image IDs and their corresponding set of
                 # results from our model
@@ -450,5 +455,6 @@ class Server:
 if __name__ == "__main__":
     server = Server()
     # server.recognize()
-    server.recognize_batch(recognize=True)
+    server.recognize_batch_cpu(recognize=False)
+    # server.recognize_batch_gpu()
 #    classify_process()

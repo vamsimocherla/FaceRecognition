@@ -5,6 +5,8 @@
 import requests
 import json
 import cv2
+import face_db
+import imutils
 
 # initialize the Keras REST API endpoint URL along with the input
 # image path
@@ -21,7 +23,7 @@ ret, jpeg = cv2.imencode('.jpg', frame)
 # submit the request
 res = requests.post(KERAS_REST_API_URL, data=jpeg.tobytes())
 detection = None
-blob_size = (300, 300)
+blob_size = face_db.blob_sizes[face_db.model_index]
 try:
     r = res.json()
     # ensure the request was sucessful
@@ -34,20 +36,21 @@ try:
             right = int(detection['right'])
             bottom = int(detection['bottom'])
 
-            '''
-            small_frame = cv2.resize(frame, blob_size)
-            cv2.rectangle(small_frame, (left, top), (right, bottom), (0, 255, 0), 4)
-            cv2.imshow('small-image', small_frame)
+            # small_frame = cv2.resize(frame, blob_size)
+            # cv2.rectangle(small_frame, (left, top), (right, bottom), (0, 255, 0), 4)
+            # cv2.imshow('small-image', small_frame)
 
-            top = int(top * float(h / blob_size[0]))
-            bottom = int(bottom * float(h / blob_size[0]))
+            # top = int(top * float(h / blob_size[0]))
+            # bottom = int(bottom * float(h / blob_size[0]))
 
-            left = int(left * float(w / blob_size[1]))
-            right = int(right * float(w / blob_size[1]))
+            # left = int(left * float(w / blob_size[1]))
+            # right = int(right * float(w / blob_size[1]))
 
-            '''
             cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 4)
             cv2.imshow('image', cv2.resize(frame, (0, 0), fx=0.5, fy=0.5))
+            # cv2.imshow('imutils-image', imutils.resize(frame, width=300, height=300))
+            # print(imutils.resize(frame, width=300, height=300).shape)
+            # cv2.imshow('small-image', cv2.resize(frame, blob_size))
             cv2.waitKey(0)
         # loop over the predictions and display them
         # for (i, result) in enumerate(r["predictions"]):
