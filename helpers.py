@@ -9,7 +9,7 @@ def base64_encode_image(a):
     return base64.b64encode(a).decode("utf-8")
 
 
-def base64_decode_image(a, shape, dtype=None):
+def base64_decode_image(a, shape=None, dtype=None):
     # if this is Python 3, we need the extra step of encoding the
     # serialized NumPy string as a byte object
     if sys.version_info.major == 3:
@@ -29,4 +29,4 @@ def serialize(a):
 
 
 def deserialize(a, shape):
-    return base64_decode_image(a, shape)
+    return base64_decode_image(a, shape=shape)

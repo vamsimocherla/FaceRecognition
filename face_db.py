@@ -1,8 +1,12 @@
 import face_recognition
+import os
+
+# get the current working directory
+cwd = os.path.dirname(os.path.realpath(__file__))
 
 # Image DB location
-img_dir = "static/img/"
-model_dir = "static/models/"
+img_dir = cwd + "/static/img/"
+model_dir = cwd + "/static/models/"
 
 # Load a third sample picture and learn how to recognize it.
 john_linss_image = face_recognition.load_image_file(img_dir + "john_linss.jpg")
