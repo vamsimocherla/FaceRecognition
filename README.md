@@ -1,3 +1,5 @@
 # Face Recognition
 
-The face-rec client-server model
+Face Recognition Demo using Deep Learning
+
+![](FaceRecDemo.gif)
