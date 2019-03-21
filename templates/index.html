@@ -1,9 +1,12 @@
 <html>
   <head>
-    <title>Caesars Face Recognition Demo</title>
+    <title>Face Recognition Demo</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
   </head>
   <body>
-    <h1>Caesars Face Recognition Demo</h1>
-    <img id="video_feed" src="{{ url_for('video_feed') }}">
+    <h1 align="center">Face Recognition Demo</h1>
+    <div class="parent">
+      <img class="center" id="video_feed" src="{{ url_for('video_feed') }}">
+    </div>
   </body>
 </html>

@@ -22,6 +22,7 @@ class VideoCamera(threading.Thread):
     dark_gray = (75, 75, 75)
 
     threaded_input = False
+    threaded_output = False
     font = cv2.FONT_HERSHEY_DUPLEX
 
     # img_res = (320, 240)
@@ -56,10 +57,11 @@ class VideoCamera(threading.Thread):
         # read the first frame
         self.current_frame = self.frame = self.read_frame()
 
-        # Initialize Video Display thread
-        frame = self.read_frame()
-        self.video_shower = VideoShow(frame, scale_factor=self.display_scale,
-                                      shape=frame.shape, display_name="FaceRec").start()
+        if self.threaded_output == True:
+            # Initialize Video Display thread
+            frame = self.read_frame()
+            self.video_shower = VideoShow(frame, scale_factor=self.display_scale,
+                                          shape=frame.shape, display_name="FaceRec").start()
 
         try:
             # Face API request
@@ -134,20 +136,19 @@ class VideoCamera(threading.Thread):
             self.draw_metrics()
 
             # keep track of current frame
-            self.current_frame = self.frame
+            self.current_frame = cv2.resize(self.frame, (0, 0),
+                                            fx=float(1.0 / self.display_scale),
+                                            fy=float(1.0 / self.display_scale))
 
             if(self.display == True):
-                # assign the frame to current_frame
-                self.current_frame = cv2.resize(self.frame, (0, 0),
-                                                fx=float(1.0 / self.display_scale),
-                                                fy=float(1.0 / self.display_scale))
-
                 # display the resulting image using OpenCV
                 cv2.imshow("Video", self.current_frame)
                 if cv2.waitKey(1) == ord("q"):
                     sys.exit(1)
                     break
-            self.video_shower.frame = self.current_frame
+
+            if self.threaded_output == True:
+                self.video_shower.frame = self.current_frame
 
     def simple_display(self):
         while True:
@@ -260,23 +261,6 @@ class VideoCamera(threading.Thread):
             box_color = self.cyan
             text_color = self.cyan
             # Draw a box around the face
-            visits = None
-            if "Unknown" not in face["name"]:
-                # Check the visit count <visits_week, visits_month>
-                visits = face["visits"].split(",")
-                # If monthly visit count limit reached
-                if int(visits[1]) >= 3:
-                    box_color = self.red
-                else:
-                    box_color = self.green
-
-                # Draw a label for 'status'
-                if box_color == self.green:
-                    face["status"] = "Welcomed"
-                    face["jStatus"] = "歓迎"
-                else:
-                    face["status"] = "See Ambassador"
-                    face["jStatus"] = "アンバサダーを参照"
             self.draw_frame(top, right, bottom, left, box_color, 2, False)
             self.draw_frame(top - self.frame_width, right + self.frame_width,
                             bottom + self.frame_width, left - self.frame_width,
@@ -284,6 +268,7 @@ class VideoCamera(threading.Thread):
             cv2.putText(self.frame, "Name: " + face["name"],
                         (right + 2 * self.frame_width, top + 2 * self.frame_width + 5),
                         self.font, 0.75, text_color, 2)
+            # If the result is a recognized face, add details from DB
             if "Unknown" not in face["name"]:
                 cv2.putText(self.frame, "Username: " + face["username"],
                             (right + 2 * self.frame_width, top + 2 * self.frame_width + 35),
@@ -291,22 +276,6 @@ class VideoCamera(threading.Thread):
                             text_color, 2)
                 cv2.putText(self.frame, face["gender"] + ", Age: " + face["age"],
                             (right + 2 * self.frame_width, top + 2 * self.frame_width + 65),
-                            self.font, 0.75,
-                            text_color, 2)
-                cv2.putText(self.frame, "Tier Status: " + face["tier"],
-                            (right + 2 * self.frame_width, top + 2 * self.frame_width + 95),
-                            self.font, 0.75,
-                            text_color, 2)
-                cv2.putText(self.frame, "Residency: " + face["residency"],
-                            (right + 2 * self.frame_width, top + 2 * self.frame_width + 125),
-                            self.font, 0.75,
-                            text_color, 2)
-                cv2.putText(self.frame, "Visits: " + visits[0] + "(this week) " + visits[1] + "(this month)",
-                            (right + 2 * self.frame_width, top + 2 * self.frame_width + 155),
-                            self.font, 0.75,
-                            text_color, 2)
-                cv2.putText(self.frame, "Status: " + face["status"],
-                            (right + 2 * self.frame_width, top + 2 * self.frame_width + 185),
                             self.font, 0.75,
                             text_color, 2)
 
@@ -377,7 +346,7 @@ class VideoCamera(threading.Thread):
 
 if __name__ == "__main__":
     device = 0
-    vc = VideoCamera(src=device, display=False)
+    vc = VideoCamera(src=device, display=True)
     vc.run()
     # vc.simple_display()
     # vc.join()
