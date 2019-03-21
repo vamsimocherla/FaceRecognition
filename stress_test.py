@@ -10,9 +10,6 @@ import json
 
 # initialize the Keras REST API endpoint URL along with the input
 # image path
-# KERAS_REST_API_URL = "http://localhost:5000/predict"
-# IMAGE_PATH = "static/img/jemma.png"
-
 KERAS_REST_API_URL = "http://localhost:5000/recognize"
 IMAGE_PATH = "static/img/frame.jpg"
 
