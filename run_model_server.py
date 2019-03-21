@@ -183,6 +183,8 @@ class Server:
         face_locations = [(top, right, bottom, left)]  # top right bottom left
         face_encodings = face_recognition.face_encodings(rgb_small_image, face_locations)
         face_encoding = face_encodings[0]
+        # store the face_encodings in a DB
+        
         # See if the face is a match for the known face(s)
         matches = face_recognition.compare_faces(face_db.known_face_encodings, face_encoding)
         distances = face_recognition.face_distance(face_db.known_face_encodings, face_encoding)
@@ -274,9 +276,11 @@ class Server:
                 face = self.recognize_face(crop_image)
                 end_time = self.current_milli_time()
                 rec_time = "{:5.1f}".format(end_time - start_time)
-                print(" RecTime: {}".format(rec_time), end='\r', flush=True)
+                # print(" RecTime: {}".format(rec_time), end='\r', flush=True)
+                print(" RecTime: {}".format(rec_time))
             else:
-                print(" RecTime: {}".format(0), end='\r', flush=True)
+                # print(" RecTime: {}".format(0), end='\r', flush=True)
+                print(" RecTime: {}".format(0))
 
             # gather the metadata
             metadata = {}
@@ -297,7 +301,8 @@ class Server:
             faces.append(metadata)
 
         if len(faces) == 0:
-            print(" RecTime: {}".format(0), end='\r', flush=True)
+            # print(" RecTime: {}".format(0), end='\r', flush=True)
+            print(" RecTime: {}".format(0))
 
         return faces
 
@@ -694,10 +699,10 @@ class Server:
 # if this is the main thread of execution start the model server
 # process
 if __name__ == "__main__":
-    # server = Server()
-    # server.recognize()
+    server = Server()
+    server.recognize()
     # server.recognize_batch_cpu_util(recognize=False)
     # server.recognize_batch_gpu()
 
-    obj = ObjectDetect()
-    obj.classify_process()
+    # obj = ObjectDetect()
+    # obj.classify_process()

@@ -10,28 +10,31 @@ import json
 
 # initialize the Keras REST API endpoint URL along with the input
 # image path
-KERAS_REST_API_URL = "http://localhost:5000/predict"
-IMAGE_PATH = "static/img/jemma.png"
+# KERAS_REST_API_URL = "http://localhost:5000/predict"
+# IMAGE_PATH = "static/img/jemma.png"
+
+KERAS_REST_API_URL = "http://localhost:5000/recognize"
+IMAGE_PATH = "static/img/frame.jpg"
 
 # initialize the number of requests for the stress test along with
 # the sleep amount between requests
-NUM_REQUESTS = 500
+NUM_REQUESTS = 50
 SLEEP_COUNT = 0.01
 
 def call_predict_endpoint(n):
 
     # ResNet
     # load the input image and construct the payload for the request
-    image = open(IMAGE_PATH, "rb").read()
-    payload = {"image": image}
+    # image = open(IMAGE_PATH, "rb").read()
+    # payload = {"image": image}
     # submit the request
-    res = requests.post(KERAS_REST_API_URL, files=payload)
+    # res = requests.post(KERAS_REST_API_URL, files=payload)
 
     # FaceRec
-    # frame = cv2.imread(IMAGE_PATH)
-    # ret, jpeg = cv2.imencode('.jpg', frame)
+    frame = cv2.imread(IMAGE_PATH)
+    ret, jpeg = cv2.imencode('.jpg', frame)
     # submit the request
-    # res = requests.post(KERAS_REST_API_URL, data=jpeg.tobytes())
+    res = requests.post(KERAS_REST_API_URL, data=jpeg.tobytes())
     try:
         r = res.json()
         # ensure the request was sucessful

@@ -1,5 +1,6 @@
 # ---> Avoid uploading images in static folder
 static/
+face_db.py
 
 # ---> .idea folder
 **/.idea/workspace.xml

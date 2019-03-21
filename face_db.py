@@ -52,7 +52,7 @@ known_face_names = {
         "tier": "Seven Star Member", "jTier": "セブンスター会員", "visits": "1,3", "residency": "Resident",
         "jResidency": "居住者", "prefix": "Mr."},
     4: {"status": "See Ambassador", "jStatus": "アンバサダーを参照", "img": img_dir + "krishna.jpg",
-       "name": "Krishna", "username": "kmocherla", "age": "29", "gender": "Male",
+       "name": "Krishna", "username": "kmocherla", "age": "21", "gender": "Male",
        "tier": "Seven Star Member", "jTier": "セブンスター会員", "visits": "1,3", "residency": "Non-Resident",
        "jResidency": "居住者", "prefix": "Mr."}
 }
@@ -66,7 +66,7 @@ models = [
     "res10_300x300_ssd_iter_140000/"
 ]
 blob_sizes = [
-    (450, 450)
+    (500, 500)
 ]
 mean_val = [
     (104.0, 177.0, 123.0)
