@@ -505,7 +505,6 @@ class Server:
                 # deserialize the object and obtain the input image
                 # deserialize the payload object and obtain the input image
                 image_metadata = json.loads(q.decode("utf-8"))
-
                 # deserialize the input image
                 image_id = image_metadata["id"]
                 img_bytes = image_metadata["image"]
