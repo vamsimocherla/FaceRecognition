@@ -9,7 +9,7 @@ img_dir = cwd + "/static/img/"
 model_dir = cwd + "/static/models/"
 
 # Load a sample picture and learn how to recognize it.
-sample_image = face_recognition.load_image_file(img_dir + "sample.jpg")
+sample_image = face_recognition.load_image_file(img_dir + "barack.jpg")
 sample_face_encoding = face_recognition.face_encodings(sample_image)[0]
 
 # Create arrays of known face encodings and their names
@@ -17,8 +17,8 @@ known_face_encodings = [
     sample_face_encoding
 ]
 known_face_names = {
-    0: {"img": img_dir + "sample.jpg", "name": "John Doe",
-        "username": "jdoe", "age": "21", "gender": "Male"}
+    0: {"img": img_dir + "barack.jpg", "name": "Barack Obama",
+        "username": "bobama", "age": "21", "gender": "Male"}
 }
 unknown_face = {"name": "Unknown"}
 

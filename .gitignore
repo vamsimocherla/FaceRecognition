@@ -1,5 +1,5 @@
 # ---> Avoid uploading images in static folder
-static/
+static/img
 
 # ---> .idea folder
 **/.idea/workspace.xml
