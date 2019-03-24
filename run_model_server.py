@@ -251,6 +251,12 @@ class Server:
         scale_x = float(w / face_db.blob_sizes[face_db.model_index][0])
 
         faces = []
+        # TODO: run a parallel scan over the Face DB with the detections
+        # filter out weak detections by ensuring the `confidence` is
+        # greater than the minimum confidence
+        threshold = detections[0, 0, :, 2] >= face_db.confidence
+        detections = detections[:, :, threshold, :]
+
         # loop over the detections
         for i in range(0, detections.shape[2]):
             # extract the confidence (i.e., probability) associated with the
@@ -259,8 +265,8 @@ class Server:
 
             # filter out weak detections by ensuring the `confidence` is
             # greater than the minimum confidence
-            if confidence < face_db.confidence:
-                continue
+            # if confidence < face_db.confidence:
+            #     continue
 
             # compute the (x, y)-coordinates of the bounding box
             box = detections[0, 0, i, 3:7] * np.array([width, height, width, height])
